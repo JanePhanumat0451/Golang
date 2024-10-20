@@ -63,6 +63,18 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// บันทึก token ลงในฐานข้อมูล jwt_tokens
+	jwtToken := models.JWTToken{
+		UserID:    user.ID,
+		Token:     tokenString,
+		ExpiresAt: expirationTime,
+	}
+
+	if err := config.DB.Create(&jwtToken).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save token"})
+		return
+	}
+
 	// ส่งโทเค็นกลับไปยังผู้ใช้
 	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
