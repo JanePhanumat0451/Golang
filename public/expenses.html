@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการรายจ่าย</title>
+    <link rel="stylesheet" href="/public/css/expenses.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #C70039;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="container">
+                <header>
+                    <ul class="navbar">
+                        <li><a href="/public/home.html">หน้าแรก</a></li>
+                        <li><a href="/public/expenses.html">รายการใช้จ่ายทั้งหมด</a></li>
+                        <li><a href="/public/addexpenses.html">เพิ่มการใช้จ่าย</a></li>
+                    </ul>
+                </header>
+            </div>
+            
+        </header>
+    <h1>รายการใช้จ่าย</h1>
+    <a href="addexpenses.html">เพิ่มรายจ่ายใหม่</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>จำนวน</th>
+                <th>ประเภท</th>
+                <th>หมายเหตุ</th>
+                <th>วันที่</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+        <tbody id="expense-table-body">
+            <!-- รายการรายจ่ายจะถูกแทรกที่นี่ -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('token'); // ดึงโทเค็นจาก localStorage
+
+            if (!token) {
+                alert('คุณยังไม่ได้เข้าสู่ระบบ กรุณาล็อกอิน');
+                return;
+            }
+
+            const response = await fetch('/expenses', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // ส่งโทเค็นไปพร้อมกับคำขอ
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                const tbody = document.getElementById('expense-table-body');
+                tbody.innerHTML = ''; // ล้างเนื้อหาของตารางก่อน
+
+                data.data.forEach(expense => {
+                    const row = `
+                        <tr>
+                            <td>${expense.id}</td>
+                            <td>${expense.amount}</td>
+                            <td>${expense.category}</td>
+                            <td>${expense.notes}</td>
+                            <td>${expense.date}</td>
+                            <td>
+                                <a href="update_expense.html?id=${expense.id}">แก้ไข</a>
+                                <button onclick="deleteExpense(${expense.id})">ลบ</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } else {
+                alert(data.error || 'เกิดข้อผิดพลาดในการดึงข้อมูลรายจ่าย');
+            }
+        });
+
+        // ฟังก์ชันสำหรับลบรายจ่าย
+        async function deleteExpense(id) {
+            const token = localStorage.getItem('token'); // ดึงโทเค็นจาก localStorage
+
+            if (!token) {
+                alert('คุณยังไม่ได้เข้าสู่ระบบ กรุณาล็อกอิน');
+                return;
+            }
+
+            if (confirm('คุณแน่ใจว่าต้องการลบรายจ่ายนี้?')) {
+                const response = await fetch(`/expenses/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // ส่งโทเค็นไปพร้อมกับคำขอ
+                    }
+                });
+
+                if (response.ok) {
+                    alert('ลบรายจ่ายสำเร็จ');
+                    window.location.reload(); // โหลดหน้าซ้ำเพื่ออัปเดตรายการ
+                } else {
+                    alert('เกิดข้อผิดพลาดในการลบรายจ่าย');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

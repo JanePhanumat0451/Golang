@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/public/css/register.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <div class="form">
+            <form id="registerForm">
+                <input id="name" type="text" placeholder="Enter name" class="input-field" required>
+                <input id="email" type="email" placeholder="Enter email" class="input-field" required>
+                <input id="password" type="password" placeholder="Enter password" class="input-field" required>
+                <button type="submit" class="button">Register</button>
+            </form>
+        </div>
+        <!-- ปุ่ม Back -->
+        <button id="backBtn" class="button back-button">Back</button>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // ป้องกันการรีเฟรชหน้า
+        
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+        
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+        
+            if (response.ok) {
+                const data = await response.json();
+                alert(data.message);  // แสดงข้อความเมื่อสมัครสำเร็จ
+                window.location.href = "/public/login.html";  // ไปที่หน้า login หลังจากสมัครสำเร็จ
+            } else {
+                alert('Registration failed');
+            }
+        });
+
+        // ปุ่ม Back กลับไปหน้า index
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.location.href = "/public/index.html";
+        });
+    </script>
+</body>
+</html>

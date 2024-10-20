@@ -1,0 +1,77 @@
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #31383F; /* เปลี่ยนเป็นสีเทาเข้ม */
+    padding: 15px 0;
+}
+
+.navbar li {
+    list-style-type: none;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: #F2E9EB; /* สีขาวนวล */
+    font-weight: bold;
+    padding: 15px 20px;
+    border-radius: 5px;
+}
+
+.navbar li a:hover {
+    background-color: #DD8EA4; /* เปลี่ยนเป็นสีชมพูเข้ม */
+}
+
+/* Welcome Section */
+.welcome-section {
+    text-align: center;
+    margin: 40px 0;
+    color: #31383F; /* สีเทาเข้ม */
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+    color: #DD8EA4; /* สีชมพูเข้ม */
+}
+
+.welcome-section p {
+    font-size: 1.2rem;
+    color: #31383F; /* สีเหลืองอ่อน */
+}
+
+/* Button */
+.add-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #DD8EA4; /* สีชมพูเข้ม */
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.add-button:hover {
+    background-color: #FEDB89; /* เปลี่ยนเป็นสีเหลืองอ่อน */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #F2E9EB; /* สีขาวนวล */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.9rem;
+    color: #31383F; /* สีเทาเข้ม */
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #F2E9EB; /* สีขาวนวล */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

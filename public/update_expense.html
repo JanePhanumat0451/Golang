@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขรายจ่าย</title>
+    <link rel="stylesheet" href="/public/css/update_expense.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="container">
+                <header>
+                    <ul class="navbar">
+                        <li><a href="/public/home.html">หน้าแรก</a></li>
+                        <li><a href="/public/expenses.html">รายการใช้จ่ายทั้งหมด</a></li>
+                        <li><a href="/public/addexpenses.html">เพิ่มการใช้จ่าย</a></li>
+                    </ul>
+                </header>
+            </div>
+            
+        </header>
+    <h1>แก้ไขรายจ่าย</h1>
+    <form id="expense-form">
+        <label for="amount">จำนวน:</label>
+        <input type="number" id="amount" name="amount" required step="0.01">
+
+        <label for="category">ประเภท:</label>
+        <input type="text" id="category" name="category" required>
+
+        <label for="notes">หมายเหตุ:</label>
+        <input type="text" id="notes" name="notes">
+
+        <label for="date">วันที่:</label>
+        <input type="date" id="date" name="date" required>
+
+        <button type="submit">บันทึก</button>
+    </form>
+
+    <script>
+        // ดึงข้อมูลจาก URL เพื่อหาว่ากำลังแก้ไขรายการไหน
+        const urlParams = new URLSearchParams(window.location.search);
+        const expenseId = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('token'); // ดึงโทเค็นจาก localStorage
+
+            if (!token) {
+                alert('คุณยังไม่ได้เข้าสู่ระบบ กรุณาล็อกอิน');
+                return;
+            }
+
+            // ดึงข้อมูลรายจ่ายที่ต้องการแก้ไข
+            const response = await fetch(`/expenses/${expenseId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // ส่งโทเค็นไปพร้อมกับคำขอ
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // ตรวจสอบโครงสร้างของข้อมูลที่ได้รับ
+                const expense = data.data || data; // ตรวจสอบว่าใช้ data.data หรือ data โดยตรง
+
+                // เติมข้อมูลเดิมลงในฟอร์ม
+                document.getElementById('amount').value = expense.amount;
+                document.getElementById('category').value = expense.category;
+                document.getElementById('notes').value = expense.notes;
+                document.getElementById('date').value = expense.date;
+            } else {
+                alert(data.error || 'เกิดข้อผิดพลาดในการดึงข้อมูลรายจ่าย');
+            }
+        });
+
+        // ฟังก์ชันสำหรับบันทึกการแก้ไข
+        document.getElementById('expense-form').onsubmit = async function(event) {
+            event.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+
+            const token = localStorage.getItem('token'); // ดึงโทเค็นจาก localStorage
+
+            if (!token) {
+                alert('คุณยังไม่ได้เข้าสู่ระบบ กรุณาล็อกอิน');
+                return;
+            }
+
+            // สร้าง JSON object จากค่าในฟอร์ม
+            const updatedExpense = {
+                amount: parseFloat(document.getElementById('amount').value), // แปลงจำนวนเงินเป็น float
+                category: document.getElementById('category').value,
+                notes: document.getElementById('notes').value,
+                date: document.getElementById('date').value,
+            };
+
+            // ส่งข้อมูลการแก้ไขไปยังเซิร์ฟเวอร์
+            const response = await fetch(`/expenses/${expenseId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // ส่งโทเค็นไปพร้อมกับคำขอ
+                    'Content-Type': 'application/json', // แจ้งว่าเรากำลังส่ง JSON
+                },
+                body: JSON.stringify(updatedExpense), // ส่งข้อมูลในรูปแบบ JSON
+            });
+
+            if (response.ok) {
+                alert('แก้ไขรายจ่ายสำเร็จ');
+                window.location.href = 'expenses.html'; // เปลี่ยนไปที่หน้าแสดงรายการรายจ่าย
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error || 'เกิดข้อผิดพลาดในการแก้ไขรายจ่าย');
+            }
+        };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/public/css/home.css"> <!-- ลิงก์ไปยังไฟล์ CSS -->
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <header>
+            <ul class="navbar">
+                <li><a href="/public/home.html">หน้าแรก</a></li>
+                <li><a href="/public/expenses.html">รายการใช้จ่ายทั้งหมด</a></li>
+                <li><a href="/public/addexpenses.html">เพิ่มการใช้จ่าย</a></li>
+                <li><a href="#" id="logoutBtn">ออกจากระบบ</a></li>
+            </ul>
+        </header>
+        
+        <!-- Welcome Section -->
+        <main>
+            <div class="welcome-section">
+                <h1>ยินดีต้อนรับ, <span id="userName">[ชื่อผู้ใช้]</span>!</h1>
+                <p>จัดการและติดตามการใช้จ่ายของคุณได้ที่นี่</p>
+
+                <!-- ปุ่มเพิ่มการใช้จ่าย -->
+                <div class="action-section">
+                    <a href="/public/addexpenses.html" class="add-button">เพิ่มข้อมูลการใช้จ่ายใหม่</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            © 2024 ระบบจัดการการใช้จ่ายของเรา. All rights reserved.
+        </footer>
+    </div>
+
+    <script src="/public/home.js"></script>
+</body>
+</html>

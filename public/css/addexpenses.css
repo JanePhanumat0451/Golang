@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F2E9EB;
+    color: #31383F;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #DD8EA4;
+    text-align: center;
+}
+
+label {
+    color: #31383F;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #DD8EA4;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #FEDDB9;
+    color: #31383F;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #DD8EA4;
+    color: white;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #31383F;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.navbar li {
+    list-style: none;
+}
+
+.navbar a {
+    color: #FEDDB9;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.navbar a:hover {
+    color: #DD8EA4;
+}
